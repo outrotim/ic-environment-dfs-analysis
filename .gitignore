@@ -1,0 +1,19 @@
+# Data files (not shared)
+data/
+*.rds
+*.RData
+*.rda
+*.csv
+
+# Results (reproducible from code)
+results/
+figures/
+
+# R project files
+.Rhistory
+.RData
+.Rproj.user/
+
+# OS files
+.DS_Store
+Thumbs.db
