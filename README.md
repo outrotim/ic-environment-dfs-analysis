@@ -1,86 +1,158 @@
-# Intrinsic Capacity–Environment Interaction and Disability-Free Survival
+# IC–Environment Interaction and Disability-Free Survival — Analysis Code
 
-Analysis code for: **"Intrinsic Capacity–Environment Fit and Disability-Free Survival in Older Adults: A Harmonized Multi-Cohort Analysis Across HRS, ELSA, CHARLS, SHARE, and MHAS"**
+> **Companion code repository for the manuscript:**
+> *Environmental support delays disability onset most when intrinsic capacity is preserved: a harmonised analysis of 102,006 older adults across five international cohorts with qualitative replication in a sixth.*
 
-## Overview
+This repository contains the full analytic pipeline (18 R scripts) used to produce the variable harmonisation, primary two-stage IPD meta-analysis, causal marginal structural model (MSM/IPTW), competing-risk decomposition, KLoSA qualitative replication, IPCW loss-to-follow-up sensitivity, trajectory analysis, and all 20 pre-specified sensitivity analyses reported in the manuscript.
 
-This repository contains the R scripts to reproduce all analyses examining how intrinsic capacity (IC) and environment support interact to predict disability-free survival across five international aging cohorts (~102,000 older adults).
+**Repository purpose**: methodological transparency and independent re-analysis by readers with access to the source cohorts. It is **not** a plug-and-play pipeline and does **not** include data.
 
-## Requirements
+---
 
-- **R version:** >= 4.4
-- **Key packages:**
+## Repository contents
+
+### Root
+| File | Purpose |
+|---|---|
+| `README.md` | This file |
+| `LICENSE` | MIT License (code) |
+| `sessionInfo.txt` | Exact R and package versions used |
+| `.gitignore` | Excludes data, results, figures, cache |
+
+### Numbered R scripts (pipeline order)
+
+| # | Script | Purpose |
+|---|---|---|
+| 01 | `01_data_load.R` | Load 5 cohort CSVs (HRS, ELSA, CHARLS, SHARE, MHAS) into a pooled long-format dataset |
+| 02 | `02_harmonization.R` | Harmonise IC indicators (z-scores, reverse-coding) and environmental variables across cohorts |
+| 03 | `03_ic_cfa.R` | Multi-group confirmatory factor analysis (MG-CFA) of IC; sequential measurement invariance testing |
+| 04 | `04_env_index.R` | Formative environment composite (social participation + financial + living arrangement) |
+| 05 | `05_descriptive.R` | Baseline Table 1 (by cohort; by IC × Env group) and variable availability matrix |
+| 06 | `06_ipd_ma.R` | **Primary analysis**: two-stage IPD meta-analysis — cohort-specific Cox models (M1–M5) and REML random-effects pooling |
+| 07 | `07_trajectory.R` | Latent-class growth analysis (LCGA) for IC and environment trajectories |
+| 08 | `08_msm.R` | **Causal analysis**: marginal structural model with stabilised IPTW; time-varying confounding adjustment |
+| 09 | `09_sensitivity.R` | 20 pre-specified sensitivity analyses |
+| 10 | `10_figures.R` | Publication figures (Figures 1–3 + eFigures 1–2) |
+| 11 | `11_strobe_flowchart.R` | STROBE-IPD participant flow diagram |
+| 12 | `12_consistency_check.R` | Numerical consistency audit against manuscript claims |
+| 13 | `13_table1_from_surv.R` | Regenerate Table 1 from the survival analytic dataset |
+| 14 | `14_competing_risks.R` | Cause-specific hazard (CSH) decomposition: CSH-Disability vs CSH-Death |
+| 15 | `15_objective_env.R` | Structural-only environment proxy (financial + living, excluding social participation) |
+| 16 | `16_marginal_effect_plot.R` | Marginal effect of environment across IC continuum (delta method + REML pooling) |
+| 17 | `17_klosa_replication.R` | Qualitative external replication in KLoSA (reduced 5-indicator IC, 2-factor CFA) |
+| 18 | `18_ipcw_sensitivity.R` | IPCW sensitivity analysis for the 44,555 eligible baseline participants excluded for loss-to-follow-up |
+
+---
+
+## Data availability (layered statement)
+
+This repository is **code-only**. Individual participant data are not redistributable under the respective data-use agreements (DUAs).
+
+### Source cohort access
+
+| Cohort | Access route | Access level |
+|---|---|---|
+| Health and Retirement Study (HRS) | https://hrs.isr.umich.edu | Registered researchers (no fee) |
+| English Longitudinal Study of Ageing (ELSA) | https://www.elsa-project.ac.uk | Registered researchers |
+| China Health and Retirement Longitudinal Study (CHARLS) | https://charls.pku.edu.cn | Registered researchers |
+| Survey of Health, Ageing and Retirement in Europe (SHARE) | https://share-eric.eu | Research contract |
+| Mexican Health and Aging Study (MHAS) | https://www.mhasweb.org | Registration required |
+| Korean Longitudinal Study of Aging (KLoSA) | https://survey.keis.or.kr | Registered researchers |
+
+All main analyses used **Harmonized** files distributed via the Gateway to Global Aging Data (https://g2aging.org).
+
+### What is **not** in this repository
+
+- Individual participant data in any format (prohibited by cohort DUAs)
+- Intermediate analytic files (`data/*.rds`) derived from protected data
+- Raw cohort CSV files
+
+---
+
+## How to reproduce the analyses
+
+Prerequisites:
+1. R ≥ 4.5 with packages listed in `sessionInfo.txt` (tidyverse, survival, metafor, lavaan, haven, lcmm).
+2. Access to the six cohort Harmonized data files.
+3. Familiarity with each cohort's variable naming conventions.
+
+Pipeline outline:
 
 ```r
-install.packages(c("tidyverse", "survival", "metafor", "lavaan", "lcmm",
-                    "WeightIt", "cobalt", "broom", "gridExtra", "here"))
+# Set working directory to the cloned repository root
+# setwd("path/to/ic-environment-dfs-analysis")
+
+# Place raw cohort CSVs at data/raw/{hrs,elsa,charls,share,mhas}.csv
+# (scripts expect this layout)
+
+# Step 1: Load cohort data and pool into long format
+source("01_data_load.R")
+
+# Step 2: Harmonise IC + environment indicators
+source("02_harmonization.R")
+
+# Step 3: MG-CFA with invariance testing
+source("03_ic_cfa.R")
+
+# Step 4: Environment formative composite
+source("04_env_index.R")
+
+# Step 5: Descriptive tables
+source("05_descriptive.R")
+
+# Step 6: Primary IPD meta-analysis (Cox M1-M5)
+source("06_ipd_ma.R")
+
+# Step 7: LCGA trajectory analysis
+source("07_trajectory.R")
+
+# Step 8: MSM with IPTW
+source("08_msm.R")
+
+# Steps 9-18: Sensitivity, figures, supplementary analyses
+# (run individually as needed)
 ```
 
-## Setup
+---
 
-1. Clone this repository
-2. Place raw cohort CSV files in `data/raw/` (see Data Access below)
-3. All scripts use `here::here()` for path resolution — run from the project root or open the `.Rproj` file
+## Important caveats for reusers
 
-Expected directory structure:
-```
-project_root/
-├── data/
-│   ├── raw/           # Raw cohort CSV files (not included)
-│   ├── analytic_final.rds   # Generated by scripts 01-02
-│   └── survival_cohort.rds  # Generated by script 06
-├── results/           # Output CSV files
-├── figures/           # Output PDF/PNG figures
-├── *.R                # Analysis scripts
-└── README.md
-```
+1. **Measurement invariance**: The three-factor IC CFA achieved scalar (not strict) invariance across the five main cohorts. Users extending this IC composite to new populations should re-fit the MG-CFA and verify at least scalar invariance before cross-population comparisons.
+2. **Proportional hazards**: The M4 global PH test was violated in SHARE (p<0·001) while the other four cohorts passed; individual key terms (IC, environment, interaction) passed in SHARE. The two-stage random-effects meta-analytic framework absorbs between-cohort PH heterogeneity.
+3. **KLoSA reduced indicator set**: The Harmonized KLoSA E.2 release lacks cognitive indicators; `17_klosa_replication.R` uses a reduced 5-indicator IC with a 2-factor CFA. Direct translation of the 7-indicator composite to KLoSA is not supported.
+4. **Environment formative composite**: The index is formative (not reflective); users should not apply internal-consistency reliability metrics (e.g., Cronbach's α) designed for reflective scales.
+5. **Selection bias diagnostics**: 44,555 of 146,561 eligible baseline participants (30%) had no post-baseline follow-up and were excluded from the analytic cohort. The IPCW sensitivity (`18_ipcw_sensitivity.R`) shows the pooled interaction HR is not materially biased by this exclusion (HR 0·898 unweighted → 0·895 IPCW-adjusted).
 
-## Script Pipeline
-
-| # | Script | Description | Input | Output |
-|---|--------|-------------|-------|--------|
-| 01 | `01_data_load.R` | Load raw data from 5 cohorts (HRS, ELSA, CHARLS, SHARE, MHAS) | Cohort CSV files | `data/raw_*.rds` |
-| 02 | `02_harmonization.R` | Harmonize variables across cohorts | Raw data | `data/analytic_final.rds` |
-| 03 | `03_ic_cfa.R` | Multi-group CFA with scalar measurement invariance testing | Analytic data | IC factor scores |
-| 04 | `04_env_index.R` | Construct formative environment support index | Analytic data | Environment scores |
-| 05 | `05_descriptive.R` | Baseline characteristics & descriptive statistics | Analytic data | `results/table1_*.csv` |
-| 06 | `06_ipd_ma.R` | Two-stage random-effects meta-analysis (Cox models) | `data/survival_cohort.rds` | `results/stage2_pooled.csv` |
-| 07 | `07_trajectory.R` | Latent class growth analysis (LCGA) for IC-Env co-trajectories | Analytic data | Trajectory assignments |
-| 08 | `08_msm.R` | Marginal structural models with stabilized IPTW | Analytic data | `results/msm_*.csv` |
-| 09 | `09_sensitivity.R` | 18 pre-specified sensitivity analyses | Both `.rds` files | `results/sensitivity_*.csv` |
-| 10 | `10_figures.R` | Generate all main & supplementary figures | Results CSVs | `figures/*.pdf`, `figures/*.png` |
-| 11 | `11_strobe_flowchart.R` | STROBE participant flow diagram | Hardcoded numbers | `figures/fig1_strobe_flow.*` |
-| 12 | `12_consistency_check.R` | Cross-check numbers across all outputs | All results | `results/consistency_audit.txt` |
-| 13 | `13_table1_from_surv.R` | Regenerate Table 1 from survival cohort | `survival_cohort.rds` | `results/table1_surv_*.csv` |
-
-### Execution order
-
-- Scripts 01-04 must run sequentially (data pipeline)
-- Scripts 06-09 can run independently after 01-04
-- Script 10 requires results from 06-09
-- Script 12 requires all prior outputs
-- Total runtime: ~45-60 minutes (mainly 07 and 09)
-
-## Data Access
-
-Individual-level data are publicly available from each cohort's repository upon registration:
-
-| Cohort | Country | URL |
-|--------|---------|-----|
-| HRS | United States | https://hrs.isr.umich.edu |
-| ELSA | United Kingdom | https://www.elsa-project.ac.uk |
-| CHARLS | China | https://charls.pku.edu.cn |
-| SHARE | Europe (28 countries) | https://share-eric.eu |
-| MHAS | Mexico | https://www.mhasweb.org |
-
-Harmonized data files are available via the [Gateway to Global Aging Data](https://g2aging.org).
-
-## Reproducibility
-
-- Random seed: `set.seed(2024)` used where applicable
-- All paths use `here::here()` for portability
-- No individual-level data are included in this repository
+---
 
 ## License
 
-MIT License. See [LICENSE](LICENSE).
+- **Code** (`R/*.R`, `*.txt`): [MIT License](LICENSE).
+- **Documentation** (`README.md`): [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+---
+
+## Citation
+
+If you use or adapt this code, please cite the companion manuscript:
+
+```
+[Authors]. Environmental support delays disability onset most when intrinsic
+capacity is preserved: a harmonised analysis of 102,006 older adults across
+five international cohorts with qualitative replication in a sixth.
+[Journal] [Year]; [Volume]: [Pages]. DOI: [DOI]
+```
+
+A `CITATION.cff` file will be added upon manuscript acceptance.
+
+---
+
+## Acknowledgments
+
+We acknowledge the data providers for HRS, ELSA, CHARLS, SHARE, MHAS, KLoSA, and the Gateway to Global Aging Data. Full cohort-specific acknowledgments (including grant numbers) are provided in the companion manuscript.
+
+---
+
+## Contact
+
+Contact details for the corresponding author appear in the published manuscript. Issues with the code may be opened via GitHub Issues.
