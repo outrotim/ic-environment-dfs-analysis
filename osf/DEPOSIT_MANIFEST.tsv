@@ -1,0 +1,6 @@
+component	local_path	disclosure
+Code	code/	MIT; no individual data
+Tests	tests/	Aggregate-output regression tests
+Documentation	docs/	CC BY 4.0; retrospective archive
+Results	results/	Cohort-level or pooled aggregate outputs only
+Figures	figures/	PDF outputs; no participant-level data

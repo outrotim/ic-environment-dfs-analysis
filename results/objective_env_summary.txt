@@ -1,0 +1,26 @@
+=== OBJECTIVE ENVIRONMENT PROXY: SENSITIVITY ANALYSIS ===
+
+Purpose: Test whether IC × Env interaction holds with purely structural
+environment measure (financial capacity + living arrangement), excluding
+social participation (the most behavioural component).
+
+Env proxy: mean(z_env_fin, z_env_liv), both required non-missing
+Model: Surv(time_dfs, event_dfs) ~ ic_cfa_c * env_obj_c + age + female + chronic_n
+Pooling: REML random-effects meta-analysis across cohorts
+
+# A tibble: 3 × 11
+  analysis            term                  hr ci_lo ci_hi        p    i2
+  <chr>               <chr>              <dbl> <dbl> <dbl>    <dbl> <dbl>
+1 Objective_env_proxy IC × Env_objective 0.968 0.948 0.988 2.02e- 3  59.0
+2 Objective_env_proxy ic_cfa_c           0.781 0.743 0.822 1.37e-21  90.8
+3 Objective_env_proxy env_obj_c          0.898 0.863 0.934 9.11e- 8  86.1
+  n_cohorts n_total n_events note                                               
+      <int>   <int>    <int> <chr>                                              
+1         5   85585    21894 2-indicator env (financial + living), excl. social…
+2         5   85585    21894 Main effect from objective env model               
+3         5   85585    21894 Main effect from objective env model               
+
+Interpretation:
+  If the interaction remains significant with the objective proxy,
+  the IC×Env synergy is not driven solely by social participation
+  (which could reflect reverse causation from functional ability).

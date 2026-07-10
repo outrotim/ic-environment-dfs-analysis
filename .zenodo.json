@@ -1,0 +1,25 @@
+{
+  "title": "Environmental support is more strongly associated with disability-free survival when intrinsic capacity is preserved: analysis code",
+  "upload_type": "software",
+  "description": "Version 1.0 analysis code and aggregate outputs for a harmonised five-cohort study of intrinsic capacity, environmental support, and disability-free survival. This is a retrospective research archive, not a pre-registration. No individual participant data are included.",
+  "creators": [
+    {
+      "name": "Study 17 investigators"
+    }
+  ],
+  "version": "1.0.0",
+  "license": "mit-license",
+  "keywords": [
+    "intrinsic capacity",
+    "environment",
+    "disability-free survival",
+    "healthy ageing"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/outrotim/ic-environment-dfs-analysis",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}

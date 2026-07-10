@@ -1,0 +1,37 @@
+=== Study 17 Numerical Consistency Audit (v2.2) ===
+Date: 2026-07-10 14:16:03.352685
+
+--- Sample sizes ---
+Initial persons (cohort+id): computed=174695, flowchart=174695, MATCH=TRUE
+Analytic sample N (re-derived with DFS analysis time): computed=102006, manuscript=102006, MATCH=TRUE
+Analytic sample N (authoritative): surv_cohort=102006, manuscript=102006, MATCH=TRUE
+
+--- DFS events (from survival_cohort.rds, authoritative) ---
+DFS events total: 26758, manuscript=26758, MATCH=TRUE
+  Disability-first: 24114, manuscript=24114, MATCH=TRUE
+  Death-as-first-DFS (event_mort): 2644, manuscript=2644, MATCH=TRUE
+  Note: 733 same-wave ties (disability+death) counted as mortality by 06_ipd_ma.R
+Total deaths (all-cause, incl. post-disability): 19307
+  (NOT the manuscript's 2,644 — manuscript reports death-as-first-DFS-event only)
+
+--- Exposure availability ---
+IC+Env both available: 88409, manuscript=88409, MATCH=TRUE
+
+--- E-value ---
+E-value point: computed=1.47, manuscript=1.47, MATCH=TRUE
+E-value CI: computed=1.22, manuscript=1.22, MATCH=TRUE
+
+--- Audit result ---
+ALL AUTHORITATIVE CHECKS PASS (survival_cohort.rds vs manuscript)
+
+--- Historical bugs fixed in v2 ---
+BUG 1: Used group_by(id) instead of group_by(cohort, id)
+  → Under-counted persons by ~149 (cross-cohort ID overlap)
+BUG 2: DFS defined as 'ever disabled OR died' instead of 'first event'
+  → Over-counted DFS events (36,389 vs correct 26,758)
+BUG 3: Deaths counted as all-cause (19,309) instead of death-as-first-DFS (2,644)
+BUG 4: E-value CI reference hardcoded as 1.69 (should be 1.22)
+BUG 5 (v2.1): DFS sub-split used t_death<t_disab (strict, 1109) instead of event_mort (2644)
+  → 733 same-wave disability+death ties were misclassified as disability-first
+BUG 6 (v2.2): Re-derived follow-up used row count rather than DFS analysis time
+  → Duplicate-year and zero-time events were incorrectly retained; primary DFS-time rule restores N=102006

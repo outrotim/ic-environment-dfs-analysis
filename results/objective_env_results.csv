@@ -1,0 +1,4 @@
+analysis,term,hr,ci_lo,ci_hi,p,i2,n_cohorts,n_total,n_events,note
+Objective_env_proxy,IC × Env_objective,0.9680890658969119,0.948361155700586,0.9882273581912127,0.0020196813412029133,59.02717844783936,5,85585,21894,"2-indicator env (financial + living), excl. social participation"
+Objective_env_proxy,ic_cfa_c,0.7814009196402639,0.7428070344643427,0.8220000200387986,1.3651348373528747e-21,90.79256022744386,5,85585,21894,Main effect from objective env model
+Objective_env_proxy,env_obj_c,0.8977979272127249,0.8629887585047998,0.934011144599379,9.11138160741348e-8,86.13074387631295,5,85585,21894,Main effect from objective env model

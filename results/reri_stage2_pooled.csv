@@ -1,0 +1,2 @@
+model_source,estimand,method,reference_group,k,pooled_reri,se,ci_lower,ci_upper,p_value,tau2,I2,Q,Q_p
+M5_6group,RERI for low IC and low environment vs high IC and high environment,cohort-specific delta method with REML pooling,High IC / High Env,5,-0.03362645120183713,0.11498488757843123,-0.2589926896219493,0.1917397872182751,0.7699484289959513,0.04669103506434489,74.66254754890758,16.13856825245517,0.0028387519067335416

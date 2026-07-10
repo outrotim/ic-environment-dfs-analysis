@@ -1,0 +1,20 @@
+=== COMPETING RISKS ANALYSIS: CAUSE-SPECIFIC HAZARD MODELS ===
+
+Two cause-specific Cox models decompose the composite DFS endpoint:
+  CSH-Disability: disability as event, death treated as censoring
+  CSH-Death: death as event, disability treated as censoring
+
+Both models: Surv(cs_time, event) ~ ic_cfa_c * env_form_c + age + female + chronic_n
+Pooling: REML random-effects meta-analysis across 5 cohorts
+
+# A tibble: 3 × 8
+  outcome                            hr ci_lo ci_hi       p    i2     n events
+  <chr>                           <dbl> <dbl> <dbl>   <dbl> <dbl> <int>  <int>
+1 DFS (primary composite)         0.898 0.834 0.967 0.00447  73.5 88409  22735
+2 CSH-Disability (death censored) 0.898 0.835 0.967 0.00431  72.2 88409  21815
+3 CSH-Death (disability censored) 0.923 0.734 1.16  0.489    18.5 70000    911
+
+Interpretation:
+  If CSH-Disability interaction is significant but CSH-Death is not,
+  the IC×Env synergy operates specifically through disability prevention,
+  consistent with the primary analysis finding.

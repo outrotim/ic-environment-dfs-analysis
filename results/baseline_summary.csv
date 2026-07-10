@@ -1,0 +1,11 @@
+cohort,n,n_died,pct_died,table,adl_any_pct,iadl_any_pct,adl_mean
+CHARLS,15264,2320,15.2,mortality,NA,NA,NA
+ELSA,14663,788,5.4,mortality,NA,NA,NA
+HRS,28694,12514,43.6,mortality,NA,NA,NA
+MHAS,13355,2020,15.1,mortality,NA,NA,NA
+SHARE,102570,18691,18.2,mortality,NA,NA,NA
+CHARLS,15264,NA,NA,adl_disability,21.8,26.2,0.48
+ELSA,14663,NA,NA,adl_disability,19.6,15.1,0.39
+HRS,28694,NA,NA,adl_disability,18.4,15.3,0.43
+MHAS,13355,NA,NA,adl_disability,18.7,12.4,0.37
+SHARE,102570,NA,NA,adl_disability,12.5,10.7,0.28

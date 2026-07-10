@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the companion manuscript and archived release."
+title: "Environmental support is more strongly associated with disability-free survival when intrinsic capacity is preserved: analysis code"
+type: software
+version: "1.0.0"
+date-released: "2026-07-10"
+authors:
+  - family-names: "Study 17 investigators"
+repository-code: "https://github.com/outrotim/ic-environment-dfs-analysis"
+url: "https://github.com/outrotim/ic-environment-dfs-analysis"
+license: MIT
+keywords:
+  - intrinsic capacity
+  - environment
+  - disability-free survival
+  - healthy ageing
